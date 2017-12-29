@@ -1,0 +1,45 @@
+version: '2'
+services:
+  # config:
+  #   image: lsquared/mosquitto-config:latest
+  #   volumes:
+  #     - broker-config:/mosquitto/config
+  #     - proxy-config:/nginx/config
+
+  broker:
+    image: lsquared/mosquitto:1.4.14
+    networks:
+    - mosquitto
+    restart: always
+    volumes:
+      - broker-config:/mosquitto/config:ro
+      - broker-data:/mosquitto/data
+      # - /var/lib/docker/volumes/mosquitto/config:/mosquitto/config
+      # - /var/lib/docker/volumes/mosquitto/data:/mosquitto/data
+      # - /var/lib/docker/volumes/mosquitto/log:/mosquitto/log
+  
+  # proxy:
+  #   environment:
+  #   - VIRTUAL_HOST:mqtt.lsquared.fr
+  #   image: lsquared/nginx:X.X.X
+  #   ports:
+  #   {{- if (.Values.MQTT_PORT) }}
+  #     - ${MQTT_PORT}:1883
+  #   {{- end }}
+  #   {{- if (.Values.MQTT_SSL_PORT) }}
+  #     - ${MQTT_SSL_PORT}:8883
+  #   {{- end }}
+  #   {{- if (.Values.MQTT_WSS_PORT) }}
+  #     - ${MQTT_WSS_PORT}:9883
+  #   {{- end }}
+  #   restart: always
+  #   volumes:
+  #     - proxy-config:/etc/nginx/:ro
+
+volumes:
+  broker-config:
+  broker-data:
+  # proxy-config:
+
+network:
+  mosquitto:
