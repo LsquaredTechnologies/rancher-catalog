@@ -24,7 +24,7 @@ services:
     {{- end }}
     restart: always
     volumes:
-      - broker-config:/srv/mosquitto/config:ro
+      - broker-config:/srv/mosquitto/config
       - broker-data:/srv/mosquitto/data
 
   # proxy:
