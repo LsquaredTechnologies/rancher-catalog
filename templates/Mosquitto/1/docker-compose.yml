@@ -10,6 +10,16 @@ services:
     image: lsquared/mosquitto:1.4.14
     networks:
     - mosquitto
+    ports:
+    {{- if (.Values.MQTT_PORT) }}
+      - ${MQTT_PORT}:1883
+    {{- end }}
+    {{- if (.Values.MQTT_SSL_PORT) }}
+      - ${MQTT_SSL_PORT}:8883
+    {{- end }}
+    {{- if (.Values.MQTT_WSS_PORT) }}
+      - ${MQTT_WSS_PORT}:9883
+    {{- end }}
     restart: always
     volumes:
       - broker-config:/mosquitto/config:ro
@@ -22,16 +32,6 @@ services:
   #   environment:
   #   - VIRTUAL_HOST:mqtt.lsquared.fr
   #   image: lsquared/nginx:X.X.X
-  #   ports:
-  #   {{- if (.Values.MQTT_PORT) }}
-  #     - ${MQTT_PORT}:1883
-  #   {{- end }}
-  #   {{- if (.Values.MQTT_SSL_PORT) }}
-  #     - ${MQTT_SSL_PORT}:8883
-  #   {{- end }}
-  #   {{- if (.Values.MQTT_WSS_PORT) }}
-  #     - ${MQTT_WSS_PORT}:9883
-  #   {{- end }}
   #   restart: always
   #   volumes:
   #     - proxy-config:/etc/nginx/:ro
