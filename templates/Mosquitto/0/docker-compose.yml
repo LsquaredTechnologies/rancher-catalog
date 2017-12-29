@@ -1,9 +1,10 @@
 version: '2'
 services:
   mosquitto:
+    name: mosquitto
     image: eclipse-mosquitto:1.4.12
     volumes:
-      - data:/mosquitto/data
+      - mosquitto-data:/mosquitto/data
       # - /var/lib/docker/volumes/mosquitto/config:/mosquitto/config
       # - /var/lib/docker/volumes/mosquitto/data:/mosquitto/data
       # - /var/lib/docker/volumes/mosquitto/log:/mosquitto/log
@@ -17,4 +18,4 @@ services:
     restart: always
   
 volumes:
-  data:
+  mosquitto-data:
