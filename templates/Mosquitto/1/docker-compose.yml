@@ -8,6 +8,8 @@ services:
 
   broker:
     image: lsquared/mosquitto:1.4.14
+    labels:
+      io.rancher.container.pull_image: always
     networks:
     - mosquitto
     ports:
@@ -22,12 +24,9 @@ services:
     {{- end }}
     restart: always
     volumes:
-      - broker-config:/mosquitto/config:ro
-      - broker-data:/mosquitto/data
-      # - /var/lib/docker/volumes/mosquitto/config:/mosquitto/config
-      # - /var/lib/docker/volumes/mosquitto/data:/mosquitto/data
-      # - /var/lib/docker/volumes/mosquitto/log:/mosquitto/log
-  
+      - broker-config:/srv/mosquitto/config:ro
+      - broker-data:/srv/mosquitto/data
+
   # proxy:
   #   environment:
   #   - VIRTUAL_HOST:mqtt.lsquared.fr
