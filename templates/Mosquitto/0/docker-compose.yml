@@ -1,7 +1,6 @@
 version: '2'
 services:
   mosquitto:
-    name: mosquitto
     image: eclipse-mosquitto:1.4.12
     volumes:
       - mosquitto-data:/mosquitto/data
