@@ -1,6 +1,6 @@
 version: '2'
 
-.catalog:
+catalog:
   name: Mosquitto
   description: |
     Eclipse Mosquitto is an open source message broker which implements MQTT.
@@ -34,24 +34,18 @@ services:
     scale: 1
     lb_config:
       port_rules:
-      {{- if (.Values.MQTT_PORT) }}
       - source_port: ${MQTT_PORT}
         target_port: 1883
         service: broker
         protocol: mqtt
-      {{- end }}
-      {{- if (.Values.MQTT_SSL_PORT) }}
       - source_port: ${MQTT_SSL_PORT}
         target_port: 8883
         service: broker
         protocol: mqtt
-      {{- end }}
-      {{- if (.Values.MQTT_WSS_PORT) }}
       - source_port: ${MQTT_WSS_PORT}
         target_port: 9883
         service: broker
         protocol: wss
-      {{- end }}
     health_check:
       port: 42
       interval: 2000
