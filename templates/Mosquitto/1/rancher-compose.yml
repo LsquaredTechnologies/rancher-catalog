@@ -12,14 +12,12 @@ catalog:
      required: false
      type: 'int'
      default: 1883
-
    - variable: 'MQTT_SSL_PORT'
      description: 'Leave empty for not exposing MQTT over SSL'
      label: 'MQTT SSL Port'
      required: false
      type: 'int'
-     default: 8883
-     
+     default: 8883     
    - variable: 'MQTT_WSS_PORT'
      description: 'Leave empty for not exposing MQTT over WebScoket'
      label: 'MQTT WSS Port'
@@ -30,22 +28,25 @@ catalog:
 services:
   broker:
     scale: 1
+    start_on_create: true
   proxy:
     scale: 1
+    start_on_create: true
     lb_config:
+      certs: []
       port_rules:
       - source_port: ${MQTT_PORT}
         target_port: 1883
         service: broker
-        protocol: mqtt
+        protocol: tcp
       - source_port: ${MQTT_SSL_PORT}
         target_port: 8883
         service: broker
-        protocol: mqtt
+        protocol: tcp
       - source_port: ${MQTT_WSS_PORT}
         target_port: 9883
         service: broker
-        protocol: wss
+        protocol: tcp
     health_check:
       port: 42
       interval: 2000
