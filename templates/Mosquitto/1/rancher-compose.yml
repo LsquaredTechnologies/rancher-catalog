@@ -35,15 +35,15 @@ services:
     lb_config:
       certs: []
       port_rules:
-      - source_port: ${MQTT_PORT}
+      - source_port: 1883
         target_port: 1883
         service: broker
         protocol: tcp
-      - source_port: ${MQTT_SSL_PORT}
+      - source_port: 8883
         target_port: 8883
         service: broker
         protocol: tcp
-      - source_port: ${MQTT_WSS_PORT}
+      - source_port: 9883
         target_port: 9883
         service: broker
         protocol: tcp
