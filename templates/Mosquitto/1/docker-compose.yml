@@ -12,6 +12,18 @@ services:
       io.rancher.container.pull_image: always
     networks:
     - mosquitto
+    restart: always
+    stdin_open: true
+    volumes:
+      - broker-config:/srv/mosquitto/config
+      - broker-data:/srv/mosquitto/data
+
+  proxy:
+    image: rancher/lb-service-haproxy
+    labels:
+      io.rancher.scheduler.global: 'true'
+    networks:
+      - mosquitto
     ports:
     {{- if (.Values.MQTT_PORT) }}
       - ${MQTT_PORT}:1883
@@ -23,22 +35,10 @@ services:
       - ${MQTT_WSS_PORT}:9883
     {{- end }}
     restart: always
-    volumes:
-      - broker-config:/srv/mosquitto/config
-      - broker-data:/srv/mosquitto/data
-
-  # proxy:
-  #   environment:
-  #   - VIRTUAL_HOST:mqtt.lsquared.fr
-  #   image: lsquared/nginx:X.X.X
-  #   restart: always
-  #   volumes:
-  #     - proxy-config:/etc/nginx/:ro
 
 volumes:
   broker-config:
   broker-data:
-  # proxy-config:
 
 network:
   mosquitto:

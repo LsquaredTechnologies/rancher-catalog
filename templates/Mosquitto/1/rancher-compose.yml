@@ -26,3 +26,35 @@ version: '2'
      required: false
      type: 'int'
      default: 9883
+
+services:
+  broker:
+    scale: 1
+  proxy:
+    scale: 1
+    lb_config:
+      port_rules:
+      {{- if (.Values.MQTT_PORT) }}
+      - source_port: ${MQTT_PORT}
+        target_port: 1883
+        service: broker
+        protocol: mqtt
+      {{- end }}
+      {{- if (.Values.MQTT_SSL_PORT) }}
+      - source_port: ${MQTT_SSL_PORT}
+        target_port: 8883
+        service: broker
+        protocol: mqtt
+      {{- end }}
+      {{- if (.Values.MQTT_WSS_PORT) }}
+      - source_port: ${MQTT_WSS_PORT}
+        target_port: 9883
+        service: broker
+        protocol: wss
+      {{- end }}
+    health_check:
+      port: 42
+      interval: 2000
+      unhealthy_threshold: 3
+      healthy_threshold: 2
+      response_timeout: 2000
